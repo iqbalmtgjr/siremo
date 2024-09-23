@@ -1,11 +1,15 @@
 <?php
 
+use App\Livewire\Dashboard;
+use App\Livewire\Kendaraan\IndexKendaraan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', Dashboard::class);
+
+Route::get('/kendaraan', IndexKendaraan::class);

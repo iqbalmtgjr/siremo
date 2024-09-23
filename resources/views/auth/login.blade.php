@@ -3,7 +3,7 @@
 <body class="login-page bg-body-secondary">
     <div class="login-box">
         <div class="card card-outline card-primary">
-            <div class="card-header"> <a href="../index2.html"
+            <div class="card-header"> <a href="{{ url('/') }}"
                     class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
                     <h1 class="mb-0"> SI<b>REMO</b>
                     </h1>

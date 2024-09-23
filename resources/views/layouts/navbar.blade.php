@@ -47,8 +47,14 @@
                                     <div class="col-4 text-center"> <a href="#">Friends</a> </div>
                                 </div> <!--end::Row--> --}}
                             </li> <!--end::Menu Body--> <!--begin::Menu Footer-->
-                            <li class="user-footer"> <a href="#" class="btn btn-primary btn-flat">Profil</a>
-                                <a href="#" class="btn btn-danger btn-flat float-end">Keluar</a>
+                            <li class="user-footer">
+                                <a href="#" class="btn btn-primary btn-flat">Profil</a>
+                                <a href="{{ route('logout') }}" class="btn btn-danger btn-flat float-end"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">Keluar</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
                             <!--end::Menu Footer-->
                         </ul>
