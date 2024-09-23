@@ -2,47 +2,63 @@
 
 namespace App\Livewire\Kendaraan;
 
-use App\Models\Kendaraan;
 use App\Models\User;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
+use App\Models\Kendaraan;
+use Livewire\Attributes\On;
+use Livewire\WithPagination;
+use Livewire\Attributes\Rule;
 
 class IndexKendaraan extends Component
 {
-    public $kendaraans, $users;
+    use WithPagination;
 
-    #[Validate('required')]
+    protected $paginationTheme = 'bootstrap';
+
+    public $users, $kendaraan, $total, $paginate = 10;
+
+    public $search;
+
+    #[Rule('required', as: 'Merk')]
     public $merk;
 
-    #[Validate('required')]
+    #[Rule('required', as: 'Tipe')]
     public $tipe;
 
-    #[Validate('required')]
+    #[Rule('required', as: 'Pemilik')]
     public $pemilik;
 
-    #[Validate('required')]
     public $status;
 
-    #[Validate('required')]
+    #[Rule('required', as: 'Plat Kendaraan')]
     public $plat;
 
+    #[On('updateModal')]
     public function render()
     {
-        $this->kendaraans = Kendaraan::all();
+        $this->total = Kendaraan::all()->count();
         $this->users = User::all();
 
         return view(
             'livewire.kendaraan.index-kendaraan',
             [
-                'kendaraans' => $this->kendaraans,
-                'users' => $this->users
+                'kendaraans'  => $this->search === null ?
+                    Kendaraan::paginate($this->paginate) :
+                    Kendaraan::where(function ($query) {
+                        $query->where('merk', 'LIKE', '%' . $this->search . '%')
+                            ->orWhere('plat', 'LIKE', '%' . $this->search . '%')
+                            ->orWhereHas('user', function ($query) {
+                                $query->where('name', 'LIKE', '%' . $this->search . '%');
+                            });
+                    })->paginate($this->paginate),
+                'users' => $this->users,
+                'total' => $this->total
             ]
         );
     }
 
     public function store()
     {
-        // dd($this->all());
         $this->validate();
         Kendaraan::create([
             'user_id' => $this->pemilik,
@@ -52,7 +68,41 @@ class IndexKendaraan extends Component
             'status' => 'Tersedia'
         ]);
 
+        toastr()->success('Kendaraan berhasil ditambahkan');
         $this->reset();
-        $this->dispatch('stored');
+        $this->dispatch('created');
+    }
+
+    public function edit($id)
+    {
+        $this->kendaraan = Kendaraan::find($id);
+
+        $this->pemilik = $this->kendaraan->user_id;
+        $this->plat = $this->kendaraan->plat;
+        $this->merk = $this->kendaraan->merk;
+        $this->tipe = $this->kendaraan->tipe;
+        $this->status = $this->kendaraan->status;
+    }
+
+    public function update()
+    {
+        $this->validate();
+        $this->kendaraan->update($this->all());
+
+        toastr()->success('Kendaraan berhasil diperbarui');
+        $this->dispatch('edited');
+    }
+
+    public function delete($id)
+    {
+        $kendaraan = Kendaraan::find($id);
+        $kendaraan->delete();
+        toastr()->success('Kendaraan berhasil di hapus');
+        $this->dispatch('deleted');
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 }

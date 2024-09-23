@@ -10,14 +10,18 @@
         <nav class="mt-2"> <!--begin::Sidebar Menu-->
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ url('home') }}" class="nav-link"> <i class="nav-icon bi bi-speedometer"></i>
+                    <a wire:navigate href="{{ url('home') }}"
+                        class="nav-link {{ request()->is('home') ? 'active' : '' }}"> <i
+                            class="nav-icon bi bi-speedometer"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
             </ul>
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ url('kendaraan') }}" class="nav-link"> <i class="nav-icon bi bi-truck"></i>
+                    <a wire:navigate href="{{ url('kendaraan') }}"
+                        class="nav-link {{ request()->is('kendaraan') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-truck"></i>
                         <p>Kelola Kendaraan</p>
                     </a>
                 </li>

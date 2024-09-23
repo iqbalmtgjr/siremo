@@ -1,13 +1,13 @@
-<div wire:ignore.self class="modal fade" id="tambah" tabindex="-1" aria-labelledby="modalCreateKendaraanLabel"
+<div wire:ignore.self class="modal fade" id="edit" tabindex="-1" aria-labelledby="modalEditKendaraanLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalCreateKendaraanLabel">Tambah Kendaraan</h5>
+                <h5 class="modal-title" id="modalEditKendaraanLabel">Edit Kendaraan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form wire:submit="store">
+                <form wire:submit.prevent="update">
                     @csrf
                     <div class="mb-3">
                         <label for="pemilik" class="form-label">Pemilik</label>
@@ -46,10 +46,21 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" wire:model="status">
+                            <option value="">-- Pilih Status --</option>
+                            <option value="Tersedia">Tersedia</option>
+                            <option value="Sedang disewa">Sedang disewa</option>
+                        </select>
+                        @error('status')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary" wire:click="store">Simpan</button>
+                <button type="button" class="btn btn-primary" wire:click="update">Simpan</button>
             </div>
             </form>
         </div>

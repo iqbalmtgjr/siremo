@@ -43,15 +43,17 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
     integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ=" crossorigin="anonymous"></script> <!-- sortablejs -->
 
-<script type="text/javascript">
-    window.livewire.on('stored', () => {
-        $('#tambah').modal('hide');
+{{-- <script type="text/javascript">
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('stored', (event) => {
+            alert('ahaiii');
+        });
     });
 
-    window.livewire.on('updated', () => {
+    $wire.on('updated', () => {
         $('#edit').modal('hide');
     });
-</script>
+</script> --}}
 @stack('footer')
 </body><!--end::Body-->
 
