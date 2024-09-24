@@ -33,11 +33,14 @@ class IndexKendaraan extends Component
     #[Rule('required', as: 'Plat Kendaraan')]
     public $plat;
 
+    #[Rule('required', as: 'Alamat Kendaraan')]
+    public $alamat;
+
     #[On('updateModal')]
     public function render()
     {
         $this->total = Kendaraan::all()->count();
-        $this->users = User::all();
+        $this->users = User::where('role', '<>', 'super_admin')->get();
 
         return view(
             'livewire.kendaraan.index-kendaraan',
@@ -65,6 +68,7 @@ class IndexKendaraan extends Component
             'plat' => $this->plat,
             'merk' => $this->merk,
             'tipe' => $this->tipe,
+            'alamat' => $this->alamat,
             'status' => 'Tersedia'
         ]);
 
@@ -81,13 +85,21 @@ class IndexKendaraan extends Component
         $this->plat = $this->kendaraan->plat;
         $this->merk = $this->kendaraan->merk;
         $this->tipe = $this->kendaraan->tipe;
+        $this->alamat = $this->kendaraan->alamat;
         $this->status = $this->kendaraan->status;
     }
 
     public function update()
     {
         $this->validate();
-        $this->kendaraan->update($this->all());
+        $this->kendaraan->update([
+            'user_id' => $this->pemilik,
+            'plat' => $this->plat,
+            'merk' => $this->merk,
+            'tipe' => $this->tipe,
+            'alamat' => $this->alamat,
+            'status' => $this->status
+        ]);
 
         toastr()->success('Kendaraan berhasil diperbarui');
         $this->dispatch('edited');
@@ -104,5 +116,10 @@ class IndexKendaraan extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    public function resetInput()
+    {
+        $this->reset();
     }
 }

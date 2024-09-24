@@ -14,11 +14,11 @@
                     @csrf
                     <div class="input-group mb-1">
                         <div class="form-floating">
-                            <input id="loginEmail" type="email"
-                                class="form-control @error('email') is-invalid @enderror" name="email"
-                                value="{{ old('email') }}" placeholder="">
-                            <label for="loginEmail">Email</label>
-                            @error('email')
+                            <input id="loginEmail" type="text"
+                                class="form-control @error('username') is-invalid @enderror" name="username"
+                                value="{{ old('username') }}" placeholder="">
+                            <label for="loginEmail">Username</label>
+                            @error('username')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -61,7 +61,8 @@
                     {{-- <a href="#" class="btn btn-primary"> <i class="bi bi-facebook me-2"></i> Sign in
                         using Facebook
                     </a> --}}
-                    <a href="#" class="btn btn-primary"> <i class="bi bi-google me-2"></i> Masuk dengan Google
+                    <a href="{{ route('auth.google') }}" class="btn btn-primary"> <i class="bi bi-google me-2"></i>
+                        Masuk dengan Google
                     </a>
                 </div> <!-- /.social-auth-links -->
                 {{-- <p class="mb-1"> <a href="forgot-password.html">I forgot my password</a> </p> --}}

@@ -14,7 +14,7 @@
                         <select class="form-select" id="pemilik" wire:model="pemilik">
                             <option value="">-- Cari Pemilik --</option>
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                <option value="{{ $user->id }}">{{ $user->nama }}</option>
                             @endforeach
                         </select>
                         @error('pemilik')
@@ -43,6 +43,13 @@
                         <label for="plat" class="form-label">Plat</label>
                         <input type="text" class="form-control" id="plat" wire:model="plat">
                         @error('plat')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="alamat" class="form-label">Alamat</label>
+                        <textarea class="form-control" id="alamat" wire:model="alamat"></textarea>
+                        @error('alamat')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

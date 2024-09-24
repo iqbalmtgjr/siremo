@@ -6,7 +6,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h3 class="mb-0">Kelola Kendaraan</h3>
+                                <h3 class="mb-0">Kelola Pengguna</h3>
                             </div>
                         </div>
                     </div>
@@ -25,9 +25,8 @@
                                                 aria-describedby="basic-addon1">
                                         </div>
                                         <div class="ms-2">
-                                            <a href="javascript:void(0)" wire:click="resetInput"
-                                                class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#tambah">
+                                            <a href="javascript:void(0)" class="btn btn-primary btn-sm"
+                                                data-bs-toggle="modal" data-bs-target="#tambah">
                                                 <i class="bi bi-plus-circle"></i> Tambah
                                             </a>
                                         </div>
@@ -38,43 +37,45 @@
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
-                                                        <th>Pemilik</th>
-                                                        <th>Tipe</th>
-                                                        <th>Merk</th>
-                                                        <th>Plat</th>
-                                                        <th>Alamat</th>
-                                                        <th>Status</th>
+                                                        <th>Nama Lengkap</th>
+                                                        <th>Username</th>
+                                                        <th>Email</th>
+                                                        <th>No Hp</th>
+                                                        <th>Role</th>
                                                         <th style="width: 200px">Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @if ($total > 0)
-                                                        @foreach ($kendaraans as $index => $kendaraan)
-                                                            <tr wire:key="{{ $kendaraan->id }}" class="align-middle">
-                                                                <td>{{ $kendaraans->firstItem() + $loop->index }}.</td>
-                                                                <td>{{ isset($kendaraan->user) ? $kendaraan->user->name : '' }}
-                                                                </td>
-                                                                <td>{{ $kendaraan->tipe }}</td>
-                                                                <td>{{ $kendaraan->merk }}</td>
-                                                                <td>{{ $kendaraan->plat }}</td>
-                                                                <td>{{ $kendaraan->alamat }}</td>
+                                                        @foreach ($users as $index => $pengguna)
+                                                            <tr wire:key="{{ $pengguna->id }}" class="align-middle">
+                                                                <td>{{ $users->firstItem() + $loop->index }}.</td>
+                                                                <td>{{ $pengguna->nama }}</td>
+                                                                <td>{{ $pengguna->username }}</td>
+                                                                <td>{{ $pengguna->email }}</td>
+                                                                <td>{{ $pengguna->no_hp }}</td>
+                                                                <td>{{ $pengguna->role }}</td>
                                                                 <td>
-                                                                    <span
-                                                                        class="badge rounded-pill bg-{{ $kendaraan->status == 'Tersedia' ? 'success' : 'info' }} text-light">
-                                                                        {{ ucfirst($kendaraan->status) }}
-                                                                    </span>
-                                                                </td>
-                                                                <td>
-                                                                    <a href="#" class="btn btn-warning btn-sm"
-                                                                        data-bs-toggle="modal" data-bs-target="#edit"
-                                                                        wire:click="edit({{ $kendaraan->id }})">
-                                                                        <i class="bi bi-pencil-square"></i> Edit
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-danger btn-sm"
-                                                                        wire:click="delete({{ $kendaraan->id }})"
-                                                                        wire:confirm="Apakah anda yakin ingin menghapus data ini?">
-                                                                        <i class="bi bi-trash3"></i> Hapus
-                                                                    </a>
+                                                                    <div class="btn-group" role="group"
+                                                                        aria-label="Basic example">
+                                                                        <a href="#" class="btn btn-warning btn-sm"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#edit"
+                                                                            wire:click="edit({{ $pengguna->id }})">
+                                                                            <i class="bi bi-pencil-square"></i> Edit
+                                                                        </a>
+                                                                        <a href="#" class="btn btn-info btn-sm"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#mitra"
+                                                                            wire:click="mitra({{ $pengguna->id }})">
+                                                                            <i class="bi bi-intersect"></i> Mitra
+                                                                        </a>
+                                                                        <a href="#" class="btn btn-danger btn-sm"
+                                                                            wire:click="delete({{ $pengguna->id }})"
+                                                                            wire:confirm="Apakah anda yakin ingin menghapus data ini?">
+                                                                            <i class="bi bi-trash3"></i> Hapus
+                                                                        </a>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -88,7 +89,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        {{ $kendaraans->links() }}
+                                        {{ $users->links() }}
                                     </div>
                                 </div>
                             </div>
@@ -98,8 +99,9 @@
             </div>
         </div>
     </div>
-    @include('livewire.kendaraan.modal-create')
-    @include('livewire.kendaraan.modal-edit')
+    @include('livewire.pengguna.modal-create')
+    @include('livewire.pengguna.modal-edit')
+    @include('livewire.pengguna.modal-mitra')
     <script type="text/javascript">
         document.addEventListener('livewire:init', () => {
             Livewire.on('created', () => {

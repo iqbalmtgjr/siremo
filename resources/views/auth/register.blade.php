@@ -16,10 +16,24 @@
                     <div class="input-group mb-1">
                         <div class="form-floating">
                             <input id="registerFullName" type="text"
-                                class="form-control @error('name') is-invalid @enderror" name="name"
-                                value="{{ old('name') }}" placeholder="">
+                                class="form-control @error('nama') is-invalid @enderror" name="nama"
+                                value="{{ old('nama') }}" placeholder="">
                             <label for="registerFullName">Nama Lengkap</label>
-                            @error('name')
+                            @error('nama')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="input-group-text"> <span class="bi bi-person"></span> </div>
+                    </div>
+                    <div class="input-group mb-1">
+                        <div class="form-floating">
+                            <input id="registerFullName" type="text"
+                                class="form-control @error('username') is-invalid @enderror" name="username"
+                                value="{{ old('username') }}" placeholder="">
+                            <label for="registerFullName">Username</label>
+                            @error('username')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -40,6 +54,20 @@
                             @enderror
                         </div>
                         <div class="input-group-text"> <span class="bi bi-envelope"></span> </div>
+                    </div>
+                    <div class="input-group mb-1">
+                        <div class="form-floating">
+                            <input id="registerFullName" type="text"
+                                class="form-control @error('no_hp') is-invalid @enderror" name="no_hp"
+                                value="{{ old('no_hp') }}" placeholder="">
+                            <label for="registerFullName">No HP</label>
+                            @error('no_hp')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="input-group-text"> <span class="bi bi-phone"></span> </div>
                     </div>
                     <div class="input-group mb-1">
                         <div class="form-floating">
@@ -81,7 +109,8 @@
                     {{-- <a href="#" class="btn btn-primary"> <i class="bi bi-facebook me-2"></i> Sign in
                         using Facebook
                     </a> --}}
-                    <a href="#" class="btn btn-danger"> <i class="bi bi-google me-2"></i> Masuk dengan Google
+                    <a href="{{ route('auth.google') }}" class="btn btn-danger"> <i class="bi bi-google me-2"></i>
+                        Masuk dengan Google
                     </a>
                 </div> <!-- /.social-auth-links -->
                 <p class="mb-0"> <a href="{{ route('login') }}" class="link-primary text-center">
