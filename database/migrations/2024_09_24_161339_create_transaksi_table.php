@@ -14,19 +14,16 @@ return new class extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('kendaraan_id')->references('id')->on('kendaraan')->onDelete('cascade');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->string('ktp');
             $table->integer('lama_sewa');
             $table->string('total_harga');
-            $table->string('pembayaran');
-            $table->string('status');
+            $table->string('pembayaran'); //lunas, belum_lunas
+            $table->string('status'); //proses, selesai
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('transaksi');

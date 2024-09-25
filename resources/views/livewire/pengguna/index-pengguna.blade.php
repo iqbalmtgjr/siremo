@@ -51,7 +51,13 @@
                                                             <tr wire:key="{{ $pengguna->id }}" class="align-middle">
                                                                 <td>{{ $users->firstItem() + $loop->index }}.</td>
                                                                 <td>{{ $pengguna->nama }}</td>
-                                                                <td>{{ $pengguna->mitra->nama }}</td>
+                                                                <td>
+                                                                    @if ($pengguna->mitra)
+                                                                        {{ $pengguna->mitra->nama }}
+                                                                    @else
+                                                                        -
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{ $pengguna->email }}</td>
                                                                 <td>{{ $pengguna->no_hp }}</td>
                                                                 <td>{{ $pengguna->role }}</td>

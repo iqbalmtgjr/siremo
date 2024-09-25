@@ -20,17 +20,8 @@ class IndexHargaSewa extends Component
 
     public $search;
 
-    #[Rule('required', as: 'Merk')]
-    public $merk;
-
-    #[Rule('required', as: 'Tipe')]
-    public $tipe;
-
     #[Rule('required', as: 'Kendaraan')]
     public $kendaraan;
-
-    #[Rule('required', as: 'Lama Sewa')]
-    public $lama_sewa;
 
     #[Rule('required', as: 'Harga Sewa')]
     public $harga_sewa;
@@ -48,10 +39,7 @@ class IndexHargaSewa extends Component
                     Hargasewa::paginate($this->paginate) :
                     Hargasewa::where(function ($query) {
                         $query->where('merk', 'LIKE', '%' . $this->search . '%')
-                            ->orWhere('tipe', 'LIKE', '%' . $this->search . '%')
-                            ->orWhereHas('user', function ($query) {
-                                $query->where('name', 'LIKE', '%' . $this->search . '%');
-                            });
+                            ->orWhere('tipe', 'LIKE', '%' . $this->search . '%');
                     })->paginate($this->paginate),
                 'kendaraans' => $this->kendaraans,
                 'total' => $this->total
@@ -64,10 +52,7 @@ class IndexHargaSewa extends Component
         $this->validate();
         Hargasewa::create([
             'kendaraan_id' => $this->kendaraan,
-            'merk' => $this->merk,
-            'tipe' => $this->tipe,
-            'lama_sewa' => $this->lama_sewa,
-            'harga_sewa' => $this->harga,
+            'harga' => $this->harga_sewa,
         ]);
 
         toastr()->success('Harga Sewa berhasil ditambahkan');
@@ -78,12 +63,9 @@ class IndexHargaSewa extends Component
     public function edit($id)
     {
         $this->kendaraan = Hargasewa::find($id);
-
+        // dd($this->kendaraan->harga);
         $this->kendaraan = $this->kendaraan->kendaraan_id;
-        $this->merk = $this->kendaraan->merk;
-        $this->tipe = $this->kendaraan->tipe;
-        $this->lama_sewa = $this->kendaraan->lama_sewa;
-        $this->harga_sewa = $this->kendaraan->harga;
+        $this->harga_sewa = Hargasewa::find($id)->harga;
     }
 
     public function update()
@@ -91,10 +73,7 @@ class IndexHargaSewa extends Component
         $this->validate();
         $this->kendaraan->update([
             'kendaraan_id' => $this->kendaraan,
-            'merk' => $this->merk,
-            'tipe' => $this->tipe,
-            'lama_sewa' => $this->lama_sewa,
-            'harga_sewa' => $this->harga,
+            'harga' => $this->harga_sewa,
         ]);
 
         toastr()->success('Harga sewa berhasil diperbarui');

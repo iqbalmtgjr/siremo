@@ -1,71 +1,114 @@
 <div>
-    <div class="row">
-        <div class="col-md-4">
-            <form wire:submit.prevent="store">
-                <div class="mb-3">
-                    <label for="kendaraan_id" class="form-label">Kendaraan</label>
-                    <select class="form-select" id="kendaraan_id" wire:model="kendaraan_id">
-                        <option value="">-- Pilih Kendaraan --</option>
-                        @foreach ($kendaraans as $kendaraan)
-                            <option value="{{ $kendaraan->id }}">{{ $kendaraan->merk }} - {{ $kendaraan->plat }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('kendaraan_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+    <div class="app-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="app-content-header">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h3 class="mb-0">Transaksi</h3>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" id="tanggal" wire:model="tanggal">
-                    @error('tanggal')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                <div class="app-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card mb-4">
+                                    <div class="d-flex justify-content-between align-items-center px-3 pt-3 m-2">
+                                        <div class="input-group w-auto">
+                                            <span class="input-group-text" id="basic-addon1"><i
+                                                    class="bi bi-search"></i></span>
+                                            <input type="text" wire:model.live.debounce.1000ms="search"
+                                                class="form-control" placeholder="Cari..." aria-label="Cari"
+                                                aria-describedby="basic-addon1">
+                                        </div>
+                                        <div class="ms-2">
+                                            <a href="javascript:void(0)" wire:click="resetInput"
+                                                class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#tambah">
+                                                <i class="bi bi-plus-circle"></i> Tambah
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered m-2">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10px">#</th>
+                                                        <th>Kendaraan</th>
+                                                        <th>Nama Penyewa</th>
+                                                        <th>Lama Sewa</th>
+                                                        <th>Total Harga Sewa</th>
+                                                        <th>Tanggal Sewa</th>
+                                                        <th style="width: 200px">Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if ($total > 0)
+                                                        @foreach ($transaksis as $index => $transaksi)
+                                                            <tr wire:key="{{ $transaksi->id }}" class="align-middle">
+                                                                <td>{{ $transaksis->firstItem() + $loop->index }}.</td>
+                                                                <td>{{ $transaksi->kendaraan->merk }} -
+                                                                    {{ $transaksi->kendaraan->plat }}
+                                                                </td>
+                                                                <td>{{ $transaksi->user->nama }}</td>
+                                                                <td>{{ $transaksi->lama_sewa }} Hari</td>
+                                                                <td>Rp.
+                                                                    {{ number_format($transaksi->total_harga, 0, ',', '.') }}
+                                                                </td>
+                                                                <td>{{ \Carbon\Carbon::parse($transaksi->created_at)->format('d-m-Y') }}
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#" class="btn btn-warning btn-sm"
+                                                                        data-bs-toggle="modal" data-bs-target="#edit"
+                                                                        wire:click="edit({{ $transaksi->id }})">
+                                                                        <i class="bi bi-pencil-square"></i> Edit
+                                                                    </a>
+                                                                    <a href="#" class="btn btn-danger btn-sm"
+                                                                        wire:click="delete({{ $transaksi->id }})"
+                                                                        wire:confirm="Apakah anda yakin ingin menghapus data ini?">
+                                                                        <i class="bi bi-trash3"></i> Hapus
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        <tr>
+                                                            <td colspan="8" class="text-center">
+                                                                Tidak ada data ditemukan
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        {{ $transaksis->links() }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="lama_sewa" class="form-label">Lama Sewa</label>
-                    <input type="number" class="form-control" id="lama_sewa" wire:model="lama_sewa">
-                    @error('lama_sewa')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </form>
-        </div>
-        <div class="col-md-8">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Kendaraan</th>
-                        <th>Tanggal</th>
-                        <th>Lama Sewa</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($transaksis as $transaksi)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $transaksi->kendaraan->merk }} - {{ $transaksi->kendaraan->plat }}</td>
-                            <td>{{ $transaksi->tanggal }}</td>
-                            <td>{{ $transaksi->lama_sewa }} Hari</td>
-                            <td>
-                                <span
-                                    class="badge rounded-pill bg-{{ $transaksi->status == 'Proses' ? 'warning' : 'success' }} text-light">
-                                    {{ ucfirst($transaksi->status) }}
-                                </span>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-primary"
-                                    wire:click="edit({{ $transaksi->id }})">Edit</button>
-                                <button type="button" class="btn btn-sm btn-danger"
-                                    wire:click="delete({{ $transaksi->id }})">Hapus</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            </div>
         </div>
     </div>
+    @include('livewire.transaksi.modal-create')
+    @include('livewire.transaksi.modal-edit')
+    <script type="text/javascript">
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('created', () => {
+                const tambahModal = document.getElementById('tambah')
+                const tambahModalInstance = bootstrap.Modal.getInstance(tambahModal)
+                tambahModalInstance.hide()
+            });
+
+            Livewire.on('edited', () => {
+                const editModal = document.getElementById('edit')
+                const editModalInstance = bootstrap.Modal.getInstance(editModal)
+                editModalInstance.hide()
+            });
+        });
+    </script>

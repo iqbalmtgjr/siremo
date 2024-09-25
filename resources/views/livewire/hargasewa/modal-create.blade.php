@@ -11,29 +11,21 @@
                     @csrf
                     <div class="mb-3">
                         <label for="kendaraan_id" class="form-label">Kendaraan</label>
-                        <select class="form-select" id="kendaraan_id" wire:model="kendaraan_id">
+                        <select class="form-select" id="kendaraan" wire:model="kendaraan">
                             <option value="">-- Pilih Kendaraan --</option>
                             @foreach ($kendaraans as $kendaraan)
                                 <option value="{{ $kendaraan->id }}">{{ $kendaraan->merk }} - {{ $kendaraan->plat }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('kendaraan_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="lama_sewa" class="form-label">Lama Sewa</label>
-                        <input type="number" class="form-control" id="lama_sewa" wire:model="lama_sewa"
-                            placeholder="Masukkan lama sewa...">
-                        @error('lama_sewa')
+                        @error('kendaraan')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="harga_sewa" class="form-label">Harga Sewa</label>
-                        <input type="number" class="form-control" id="harga_sewa" wire:model="harga"
-                            placeholder="Masukkan harga sewa...">
+                        <input type="number" class="form-control" id="harga_sewa" wire:model="harga_sewa"
+                            placeholder="Masukkan harga sewa tanpa titik atau koma...">
                         @error('harga_sewa')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

@@ -42,6 +42,7 @@
                                                         <th>Logo</th>
                                                         <th>Alamat</th>
                                                         <th>No Hp</th>
+                                                        <th>Status</th>
                                                         <th style="width: 200px">Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -63,6 +64,12 @@
                                                                 <td>{{ $mitra->alamat }}</td>
                                                                 <td>{{ $mitra->no_hp }}</td>
                                                                 <td>
+                                                                    <span
+                                                                        class="badge rounded-pill bg-{{ $mitra->status == 'buka' ? 'success' : 'danger' }} text-light">
+                                                                        {{ ucfirst($mitra->status) }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>
                                                                     <a href="javascript:void(0)"
                                                                         class="btn btn-warning btn-sm"
                                                                         data-bs-toggle="modal" data-bs-target="#edit"
@@ -76,6 +83,7 @@
                                                                         <i class="bi bi-trash3"></i> Hapus
                                                                     </a>
                                                                 </td>
+
                                                             </tr>
                                                         @endforeach
                                                     @else

@@ -51,7 +51,8 @@
                                                                 <td>{{ $hargasewi->kendaraan->merk }} -
                                                                     {{ $hargasewi->kendaraan->plat }}
                                                                 </td>
-                                                                <td>{{ number_format($hargasewi->harga_sewa, 0, ',', '.') }}
+                                                                <td>Rp.
+                                                                    {{ number_format($hargasewi->harga, 0, ',', '.') }}
                                                                 </td>
                                                                 <td>
                                                                     <a href="#" class="btn btn-warning btn-sm"

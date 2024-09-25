@@ -19,6 +19,15 @@
             </ul>
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
+                    <a wire:navigate href="{{ url('pengguna') }}"
+                        class="nav-link {{ request()->is('pengguna') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>Semua Pengguna</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
                     <a wire:navigate href="{{ url('mitra') }}"
                         class="nav-link {{ request()->is('mitra') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-intersect"></i>
@@ -28,28 +37,19 @@
             </ul>
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a wire:navigate href="{{ url('hargasewa') }}"
-                        class="nav-link {{ request()->is('hargasewa') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-currency-dollar"></i>
-                        <p>Harga Sewa</p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a wire:navigate href="{{ url('pengguna') }}"
-                        class="nav-link {{ request()->is('pengguna') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-people-fill"></i>
-                        <p>Pengguna</p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
                     <a wire:navigate href="{{ url('kendaraan') }}"
                         class="nav-link {{ request()->is('kendaraan') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-truck"></i>
                         <p>Kendaraan</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a wire:navigate href="{{ url('hargasewa') }}"
+                        class="nav-link {{ request()->is('hargasewa') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-currency-dollar"></i>
+                        <p>Harga Sewa</p>
                     </a>
                 </li>
             </ul>

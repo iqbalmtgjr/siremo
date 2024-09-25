@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Mitra::class);
     }
+
+    public function transaksi()
+    {
+        return $this->hasOne(Transaksi::class);
+    }
 }

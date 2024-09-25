@@ -51,7 +51,7 @@ class IndexKendaraan extends Component
                         $query->where('merk', 'LIKE', '%' . $this->search . '%')
                             ->orWhere('plat', 'LIKE', '%' . $this->search . '%')
                             ->orWhereHas('user', function ($query) {
-                                $query->where('name', 'LIKE', '%' . $this->search . '%');
+                                $query->where('nama', 'LIKE', '%' . $this->search . '%');
                             });
                     })->paginate($this->paginate),
                 'users' => $this->users,

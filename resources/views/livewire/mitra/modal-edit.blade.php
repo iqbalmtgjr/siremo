@@ -31,12 +31,38 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="logo" class="form-label">Logo</label>
-                        <input type="file" class="form-control" id="logo" wire:model="logo">
-                        @error('logo')
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" wire:model="status">
+                            <option value="">-- Pilih Status --</option>
+                            <option value="buka">Buka</option>
+                            <option value="tutup">Tutup</option>
+                        </select>
+                        @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="mb-3">
+                        <label for="logo" class="form-label">Logo</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true"
+                            x-on:livewire-upload-finish="uploading = false"
+                            x-on:livewire-upload-cancel="uploading = false"
+                            x-on:livewire-upload-error="uploading = false"
+                            x-on:livewire-upload-progress="progress = $event.detail.progress">
+                            <!-- File Input -->
+                            <input id="logo" type="file" class="form-control" wire:model="logo">
+                            @error('logo')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            <!-- Progress Bar -->
+                            <div x-show="uploading">
+                                <progress max="100" x-bind:value="progress"></progress>
+                            </div>
+                        </div>
+                    </div>
+                    @if ($logo)
+                        <img class="mt-3" width="200" src="{{ $logo->temporaryUrl() }}">
+                    @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

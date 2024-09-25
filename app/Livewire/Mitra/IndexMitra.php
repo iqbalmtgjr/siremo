@@ -33,10 +33,15 @@ class IndexMitra extends Component
     #[Validate(['logo.*' => 'image|max:1024'])]
     public $logo;
 
-    public function render()
+    public $status;
+
+    public function mount()
     {
         $this->total = Mitra::all()->count();
+    }
 
+    public function render()
+    {
         return view(
             'livewire.mitra.index-mitra',
             [
@@ -47,7 +52,7 @@ class IndexMitra extends Component
                             ->orWhere('alamat', 'LIKE', '%' . $this->search . '%')
                             ->orWhere('no_hp', 'LIKE', '%' . $this->search . '%');
                     })->paginate($this->paginate),
-                'total' => $this->total
+                // 'total' => $this->total
             ]
         );
     }
@@ -87,6 +92,7 @@ class IndexMitra extends Component
         $this->nama = $this->mitra->nama;
         $this->alamat = $this->mitra->alamat;
         $this->no_hp = $this->mitra->no_hp;
+        $this->status = $this->mitra->status;
     }
 
     public function update()
@@ -95,8 +101,8 @@ class IndexMitra extends Component
         $this->mitra->update([
             'nama' => $this->nama,
             'alamat' => $this->alamat,
-            'no_telp' => $this->no_telp,
-            'email' => $this->email
+            'no_hp' => $this->no_hp,
+            'status' => $this->status,
         ]);
 
         toastr()->success('Mitra berhasil diperbarui');
