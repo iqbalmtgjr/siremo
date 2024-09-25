@@ -28,6 +28,15 @@
             </ul>
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
+                    <a wire:navigate href="{{ url('hargasewa') }}"
+                        class="nav-link {{ request()->is('hargasewa') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-currency-dollar"></i>
+                        <p>Harga Sewa</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
                     <a wire:navigate href="{{ url('pengguna') }}"
                         class="nav-link {{ request()->is('pengguna') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-people-fill"></i>

@@ -19,7 +19,7 @@ class IndexPengguna extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $mitra, $user, $total, $paginate = 10;
+    public $mitra, $mitra_id, $user, $user_mitra, $user_id, $total, $paginate = 10;
 
     public $search;
 
@@ -94,20 +94,27 @@ class IndexPengguna extends Component
         $this->role = $this->user->role;
     }
 
-    public function mitra($id)
+    public function mitrakita($id)
     {
         $this->user = User::find($id);
+        // dd($this->user);
 
-        $this->mitra = $this->user->mitra;
+        if ($this->user->mitra_id == null) {
+            $this->mitra_id = 0;
+        } else {
+            $this->mitra_id = $this->user->mitra_id;
+        }
     }
 
     public function updateMitra()
     {
-        $this->mitra->update([
-            'user_id' => $this->user->id
+        // dd($this->mitra_id);
+        $this->user->update([
+            'mitra_id' => $this->mitra_id,
         ]);
+
         toastr()->success('Mitra berhasil diperbarui');
-        $this->dispatch('edited');
+        $this->dispatch('mitraed');
     }
 
     public function update()
@@ -118,7 +125,7 @@ class IndexPengguna extends Component
             ['nama' => $this->nama, 'username' => $this->username, 'email' => $this->email, 'no_hp' => $this->no_hp, 'role' => $this->role],
 
             // Validation rules to apply...
-            ['nama' => 'required|min:3', 'no_hp' => 'required|max:13', 'username' => 'required|min:3|unique:users,username,' . $this->user->id, 'email' => 'required|email|unique:users,email,' . $this->user->id, 'role' => 'required'],
+            ['nama' => 'required|min:3', 'no_hp' => 'required|max:13', 'username' => 'required|min:3|unique:users,username,' . $this->user_id, 'email' => 'required|email|unique:users,email,' . $this->user_id, 'role' => 'required'],
 
         )->validate();
 

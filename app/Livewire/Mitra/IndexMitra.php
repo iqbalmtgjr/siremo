@@ -57,8 +57,8 @@ class IndexMitra extends Component
         // dd($this->all());
         $this->validate();
         if ($this->logo != null) {
-            $filename = time() . rand(1, 200) . '.' . $this->logo->extension();
-            $this->logo->storeAs('public/mitra/logo/', $filename);
+            $filename = $this->logo->hashName();
+            $this->logo->storeAs('mitra/logo/', $filename, 'public');
             Mitra::create([
                 'nama' => $this->nama,
                 'alamat' => $this->alamat,

@@ -18,6 +18,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'google_id',
+        'mitra_id',
         'nama',
         'username',
         'email',
@@ -53,5 +54,10 @@ class User extends Authenticatable
     public function kendaraan()
     {
         return $this->hasOne(Kendaraan::class);
+    }
+
+    public function mitra()
+    {
+        return $this->belongsTo(Mitra::class);
     }
 }

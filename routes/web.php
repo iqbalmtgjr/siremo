@@ -5,7 +5,9 @@ use App\Livewire\Mitra\IndexMitra;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pengguna\IndexPengguna;
 use App\Http\Controllers\GoogleController;
+use App\Livewire\Hargasewa\IndexHargaSewa;
 use App\Livewire\Kendaraan\IndexKendaraan;
+use App\Livewire\Transaksi\IndexTransaksi;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -22,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', Dashboard::class);
 
     Route::get('/mitra', IndexMitra::class);
+    Route::get('/hargasewa', IndexHargaSewa::class);
     Route::get('/kendaraan', IndexKendaraan::class);
     Route::get('/pengguna', IndexPengguna::class);
+    Route::get('/transaksi', IndexTransaksi::class);
 });

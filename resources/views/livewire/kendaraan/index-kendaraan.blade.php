@@ -52,7 +52,7 @@
                                                         @foreach ($kendaraans as $index => $kendaraan)
                                                             <tr wire:key="{{ $kendaraan->id }}" class="align-middle">
                                                                 <td>{{ $kendaraans->firstItem() + $loop->index }}.</td>
-                                                                <td>{{ isset($kendaraan->user) ? $kendaraan->user->name : '' }}
+                                                                <td>{{ isset($kendaraan->user) ? $kendaraan->user->nama : '' }}
                                                                 </td>
                                                                 <td>{{ $kendaraan->tipe }}</td>
                                                                 <td>{{ $kendaraan->merk }}</td>

@@ -39,6 +39,7 @@
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Nama</th>
+                                                        <th>Logo</th>
                                                         <th>Alamat</th>
                                                         <th>No Hp</th>
                                                         <th style="width: 200px">Aksi</th>
@@ -50,6 +51,15 @@
                                                             <tr wire:key="{{ $mitra->id }}" class="align-middle">
                                                                 <td>{{ $mitras->firstItem() + $loop->index }}.</td>
                                                                 <td>{{ $mitra->nama }}</td>
+                                                                <td>
+                                                                    @if ($mitra->logo)
+                                                                        <img src="{{ asset('storage/mitra/logo/' . $mitra->logo) }}"
+                                                                            alt="Logo {{ $mitra->nama }}"
+                                                                            class="img-thumbnail" width="100">
+                                                                    @else
+                                                                        <span class="text-warning">Belum ada logo</span>
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{ $mitra->alamat }}</td>
                                                                 <td>{{ $mitra->no_hp }}</td>
                                                                 <td>
