@@ -16,15 +16,12 @@ return new class extends Migration
             $table->string('nama');
             $table->string('alamat');
             $table->string('no_hp');
-            $table->string('logo');
-            $table->string('status');
+            $table->string('logo')->nullable();
+            $table->string('status')->default('buka'); // buka, tutup
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('mitra');
