@@ -20,7 +20,7 @@ class IndexTransaksi extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $transaksii, $users, $kendaraans, $total, $paginate = 10;
+    public $transaksii, $transaksi_ktp, $lihat_ktp, $users, $kendaraans, $total, $paginate = 10;
 
     public $search;
 
@@ -42,19 +42,25 @@ class IndexTransaksi extends Component
     public $status;
     public $total_harga;
 
-    #[On('reseted')]
+    #[On('reseted', 'deleted')]
     public function render()
     {
-        $transaksi_skrng = Transaksi::where('status', 'proses')->get();
+        $transaksi_skrng = Transaksi::where('mitra_id', auth()->user()->mitra_id)
+            ->where('status', 'proses')->get();
         $this->kendaraans = Kendaraan::whereNotIn('id', $transaksi_skrng->pluck('kendaraan_id'))->get();
-        $this->total = Transaksi::all()->count();
-        $this->users = User::where('role', '<>', 'super_admin')->get();
+        $this->total = Transaksi::where('status', 'proses')->get()->count();
+        $this->users = User::where('role', '<>', 'super_admin')
+            ->where('mitra_id', auth()->user()->mitra_id)
+            ->get();
 
         return view(
             'livewire.transaksi.index-transaksi',
             [
                 'transaksis'  => $this->search === null ?
-                    Transaksi::orderBy('id', 'DESC')->paginate($this->paginate) :
+                    Transaksi::where('status', 'proses')
+                    ->where('mitra_id', auth()->user()->mitra_id)
+                    ->orderBy('id', 'DESC')
+                    ->paginate($this->paginate) :
                     Transaksi::whereHas('user', function ($query) {
                         $query->where('nama', 'LIKE', '%' . $this->search . '%');
                     })->orderBy('id', 'DESC')->paginate($this->paginate),
@@ -67,21 +73,16 @@ class IndexTransaksi extends Component
 
     public function store()
     {
-        // dd($this->all());
         $this->validate();
 
-        $harga_sewaa = Hargasewa::where('kendaraan_id', $this->kendaraan_id)->first()?->harga;
-        if (!$harga_sewaa) {
-            toastr()->error('Harga belum ditentukan admin mitra');
-            return redirect('/transaksi');
-        }
-        // $harga_sewaa = Hargasewa::where('kendaraan_id', $this->kendaraan_id)->first()->harga;
+        $harga_sewaa = Kendaraan::find($this->kendaraan_id)?->harga_sewa;
         $total_hargaa = $this->lama_sewa * $harga_sewaa;
-        if ($this->ktp != null) {
+        if ($this->ktp !== null) {
             $filename = $this->ktp->hashName();
             $this->ktp->storeAs('pengguna/ktp/', $filename, 'public');
             Transaksi::create([
                 'kendaraan_id' => $this->kendaraan_id,
+                'mitra_id' => auth()->user()->mitra_id,
                 'user_id' => $this->pengguna_id,
                 'lama_sewa' => $this->lama_sewa,
                 'total_harga' => $total_hargaa,
@@ -92,6 +93,7 @@ class IndexTransaksi extends Component
         } else {
             Transaksi::create([
                 'kendaraan_id' => $this->kendaraan_id,
+                'mitra_id' => auth()->user()->mitra_id,
                 'user_id' => $this->pengguna_id,
                 'lama_sewa' => $this->lama_sewa,
                 'total_harga' => $total_hargaa,
@@ -101,9 +103,16 @@ class IndexTransaksi extends Component
         }
 
         toastr()->success('Transaksi berhasil ditambahkan');
-        return redirect('/transaksi');
         $this->reset();
+        return redirect('/transaksi');
         // $this->dispatch('created');
+    }
+
+    public function viewktp($id)
+    {
+        $this->transaksi_ktp = Transaksi::find($id);
+        // dd($this->transaksi_ktp);
+        $this->lihat_ktp = $this->transaksi_ktp->ktp;
     }
 
     public function edit($id)
@@ -120,22 +129,15 @@ class IndexTransaksi extends Component
     public function update()
     {
         $this->validate();
-        // $validatedData = $this->validate([
-        //     'kendaraan' => ['required', 'exists:kendaraan,id'],
-        //     'pengguna' => ['required', 'exists:users,id'],
-        //     'lama_sewa' => ['required'],
-        //     'pembayaran' => ['required'],
-        //     'status' => ['required'],
-        // ]);
-        $harga_sewaa = Hargasewa::where('kendaraan_id', $this->kendaraan)->first()->harga;
-        $total_hargaa = $this->lama_sewa * $harga_sewaa;
 
+        $harga_sewaa = Kendaraan::find($this->kendaraan_id)?->harga_sewa;
+        $total_hargaa = $this->lama_sewa * $harga_sewaa;
         if ($this->ktp != null) {
             $filename = $this->ktp->hashName();
             $this->ktp->storeAs('pengguna/ktp/', $filename, 'public');
             Transaksi::where('id', $this->transaksii->id)->update([
                 'kendaraan_id' => $this->kendaraan_id,
-                'user_id' => $this->pengguna,
+                'user_id' => $this->pengguna_id,
                 'lama_sewa' => $this->lama_sewa,
                 'pembayaran' => $this->pembayaran,
                 'status' => $this->status,
@@ -145,7 +147,7 @@ class IndexTransaksi extends Component
         } else {
             Transaksi::where('id', $this->transaksii->id)->update([
                 'kendaraan_id' => $this->kendaraan_id,
-                'user_id' => $this->pengguna,
+                'user_id' => $this->pengguna_id,
                 'lama_sewa' => $this->lama_sewa,
                 'pembayaran' => $this->pembayaran,
                 'status' => $this->status,
@@ -158,11 +160,21 @@ class IndexTransaksi extends Component
         // $this->dispatch('edited');
     }
 
+    public function selesai($id)
+    {
+        Transaksi::find($id)->update([
+            'status' => 'selesai'
+        ]);
+        toastr()->success('Kendaraan selesai disewa');
+        return redirect('/transaksi');
+    }
+
     public function delete($id)
     {
         $kendaraan = Transaksi::find($id);
         $kendaraan->delete();
         toastr()->success('Transaksi berhasil di hapus');
+        return redirect('/transaksi');
         // $this->dispatch('deleted');
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('merk');
             $table->string('plat');
             $table->string('alamat');
+            $table->string('harga_sewa')->nullable();
             $table->string('foto')->nullable();
             $table->string('status');
             $table->timestamps();

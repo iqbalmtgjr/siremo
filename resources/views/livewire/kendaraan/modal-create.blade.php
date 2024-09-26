@@ -11,12 +11,14 @@
                     @csrf
                     <div class="mb-3">
                         <label for="pemilik" class="form-label">Pemilik</label>
-                        <select class="form-select" id="pemilik" wire:model="pemilik">
-                            <option value="">-- Cari Pemilik --</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->nama }}</option>
-                            @endforeach
-                        </select>
+                        <div wire:ignore>
+                            <select style="width: 100%" class="form-select select2" id="pemilik" wire:model="pemilik">
+                                <option value="">-- Cari Pemilik --</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         @error('pemilik')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -45,6 +47,14 @@
                         <input type="text" class="form-control" id="plat" wire:model="plat"
                             placeholder="Masukkan plat...">
                         @error('plat')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="harga_sewa" class="form-label">Harga Sewa</label>
+                        <input type="number" class="form-control" id="harga_sewa" wire:model="harga_sewa"
+                            placeholder="Masukkan harga sewa tanpa titik atau koma">
+                        @error('harga_sewa')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

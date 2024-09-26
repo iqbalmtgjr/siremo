@@ -69,7 +69,6 @@
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
-
                                                 <div class="mb-3">
                                                     <div wire:ignore>
                                                         <label for="pengguna" class="form-label">Pengguna</label>
@@ -97,6 +96,7 @@
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
+
                                                 <div class="mb-3">
                                                     <label for="pembayaran" class="form-label">Pembayaran</label>
                                                     <select class="form-select" id="pembayarann"
@@ -172,7 +172,7 @@
                                                         <th>Lama Sewa</th>
                                                         <th>Total Harga Sewa</th>
                                                         <th>Tanggal Sewa</th>
-                                                        <th>Status</th>
+                                                        <th>Pembayaran</th>
                                                         <th style="width: 200px">Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -192,18 +192,40 @@
                                                                 </td>
                                                                 <td>{{ \Carbon\Carbon::parse($transaksi->created_at)->format('d-m-Y') }}
                                                                 </td>
-                                                                <td>{{ $transaksi->status }}</td>
                                                                 <td>
-                                                                    <a href="#" class="btn btn-warning btn-sm"
-                                                                        data-bs-toggle="modal" data-bs-target="#edit"
-                                                                        wire:click="edit({{ $transaksi->id }})">
-                                                                        <i class="bi bi-pencil-square"></i> Edit
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-danger btn-sm"
-                                                                        wire:click="delete({{ $transaksi->id }})"
-                                                                        wire:confirm="Apakah anda yakin ingin menghapus data ini?">
-                                                                        <i class="bi bi-trash3"></i> Hapus
-                                                                    </a>
+                                                                    <span
+                                                                        class="badge rounded-pill bg-{{ $transaksi->pembayaran == 'lunas' ? 'success' : 'danger' }} text-light">
+                                                                        {{ ucfirst($transaksi->pembayaran) }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="btn-group" role="group"
+                                                                        aria-label="Basic example">
+                                                                        <a href="#" class="btn btn-info btn-sm"
+                                                                            wire:click="selesai({{ $transaksi->id }})">
+                                                                            <i class="bi bi-check-circle"></i> Selesai
+                                                                        </a>
+                                                                        <a href="#"
+                                                                            class="btn btn-primary btn-sm"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#ktp"
+                                                                            wire:click="viewktp({{ $transaksi->id }})">
+                                                                            <i class="bi bi-eye"></i> Lihat KTP
+                                                                        </a>
+                                                                        <a href="#"
+                                                                            class="btn btn-warning btn-sm"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#edit"
+                                                                            wire:click="edit({{ $transaksi->id }})">
+                                                                            <i class="bi bi-pencil-square"></i> Edit
+                                                                        </a>
+                                                                        <a href="#"
+                                                                            class="btn btn-danger btn-sm"
+                                                                            wire:click="delete({{ $transaksi->id }})"
+                                                                            wire:confirm="Apakah anda yakin ingin menghapus data ini?">
+                                                                            <i class="bi bi-trash3"></i> Hapus
+                                                                        </a>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -229,6 +251,7 @@
     </div>
     {{-- @include('livewire.transaksi.modal-create') --}}
     @include('livewire.transaksi.modal-edit')
+    @include('livewire.transaksi.modal-ktp')
     <script type="text/javascript">
         document.addEventListener('livewire:init', () => {
             Livewire.on('created', () => {

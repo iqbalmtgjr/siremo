@@ -8,6 +8,8 @@ use App\Http\Controllers\GoogleController;
 use App\Livewire\Hargasewa\IndexHargaSewa;
 use App\Livewire\Kendaraan\IndexKendaraan;
 use App\Livewire\Transaksi\IndexTransaksi;
+use App\Livewire\Penggunamitra\IndexPenggunaMitra;
+use App\Livewire\Riwayat\IndexRiwayat;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -27,5 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/hargasewa', IndexHargaSewa::class);
     Route::get('/kendaraan', IndexKendaraan::class);
     Route::get('/pengguna', IndexPengguna::class);
+    Route::get('/penggunamitra', IndexPenggunaMitra::class);
     Route::get('/transaksi', IndexTransaksi::class);
+    Route::get('/riwayat', IndexRiwayat::class);
 });

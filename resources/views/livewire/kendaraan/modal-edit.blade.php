@@ -54,6 +54,14 @@
                         @enderror
                     </div>
                     <div class="mb-3">
+                        <label for="harga_sewa" class="form-label">Harga Sewa</label>
+                        <input type="text" class="form-control" id="harga_sewa" wire:model="harga_sewa"
+                            placeholder="Masukkan harga_sewa...">
+                        @error('harga_sewa')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" wire:model="status">
                             <option value="">-- Pilih Status --</option>

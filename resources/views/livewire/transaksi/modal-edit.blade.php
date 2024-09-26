@@ -23,7 +23,7 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="pengguna" class="form-label">Pengguna</label>
+                        <label for="pengguna_id" class="form-label">Pengguna</label>
                         <select class="form-select" id="pengguna" wire:model="pengguna_id">
                             <option value="">-- Pilih Pengguna --</option>
                             @foreach ($users as $user)
@@ -55,6 +55,7 @@
                         @enderror
                     </div>
                     <div class="mb-3">
+                        <label for="ktp" class="form-label">Upload KTP</label>
                         <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true"
                             x-on:livewire-upload-finish="uploading = false"
                             x-on:livewire-upload-cancel="uploading = false"
