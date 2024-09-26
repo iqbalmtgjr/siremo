@@ -11,25 +11,30 @@
                     @csrf
                     <div class="mb-3">
                         <label for="kendaraan_id" class="form-label">Kendaraan</label>
-                        <select class="form-select" id="kendaraan" wire:model="kendaraan">
-                            <option value="">-- Pilih Kendaraan --</option>
-                            @foreach ($kendaraans as $kendaraan)
-                                <option value="{{ $kendaraan->id }}">{{ $kendaraan->merk }} - {{ $kendaraan->plat }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <div wire:ignore>
+                            <select class="form-control form-select select2" style="width: 100%" wire:model="kendaraan">
+                                <option value="" disabled>-- Pilih Kendaraan --</option>
+                                @foreach ($kendaraans as $kendaraan)
+                                    <option value="{{ $kendaraan->id }}">{{ $kendaraan->merk }} - {{ $kendaraan->plat }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         @error('kendaraan')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="pengguna" class="form-label">Pengguna</label>
-                        <select class="form-select" id="pengguna" wire:model="pengguna">
-                            <option value="">-- Pilih User --</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->nama }}</option>
-                            @endforeach
-                        </select>
+                        <div wire:ignore>
+                            <select style="width: 100%" class="form-select select2" id="pengguna-id"
+                                wire:model="pengguna">
+                                <option value="" disabled>-- Pilih User --</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         @error('pengguna')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

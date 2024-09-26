@@ -14,18 +14,17 @@ return new class extends Migration
         Schema::create('kendaraan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreignId('mitra_id')->nullable()->references('id')->on('mitra')->onDelete('cascade');
             $table->string('tipe');
             $table->string('merk');
             $table->string('plat');
             $table->string('alamat');
+            $table->string('foto')->nullable();
             $table->string('status');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('kendaraan');

@@ -25,9 +25,10 @@ class IndexTransaksi extends Component
     public $search;
 
     #[Validate('required', as: 'Kendaraan')]
-    public $kendaraan;
+    public $kendaraan_id;
 
-    public $pengguna;
+    #[Validate('required', as: 'Pengguna')]
+    public $pengguna_id;
 
     #[Validate('required', as: 'Lama Sewa')]
     public $lama_sewa;
@@ -41,20 +42,22 @@ class IndexTransaksi extends Component
     public $status;
     public $total_harga;
 
+    #[On('reseted')]
     public function render()
     {
+        $transaksi_skrng = Transaksi::where('status', 'proses')->get();
+        $this->kendaraans = Kendaraan::whereNotIn('id', $transaksi_skrng->pluck('kendaraan_id'))->get();
         $this->total = Transaksi::all()->count();
-        $this->kendaraans = Kendaraan::all();
         $this->users = User::where('role', '<>', 'super_admin')->get();
 
         return view(
             'livewire.transaksi.index-transaksi',
             [
                 'transaksis'  => $this->search === null ?
-                    Transaksi::paginate($this->paginate) :
+                    Transaksi::orderBy('id', 'DESC')->paginate($this->paginate) :
                     Transaksi::whereHas('user', function ($query) {
                         $query->where('nama', 'LIKE', '%' . $this->search . '%');
-                    })->paginate($this->paginate),
+                    })->orderBy('id', 'DESC')->paginate($this->paginate),
                 'kendaraans' => $this->kendaraans,
                 'total' => $this->total,
                 'users' => $this->users
@@ -64,15 +67,16 @@ class IndexTransaksi extends Component
 
     public function store()
     {
+        // dd($this->all());
         $this->validate();
-        $harga_sewaa = Hargasewa::where('kendaraan_id', $this->kendaraan)->first()->harga;
+        $harga_sewaa = Hargasewa::where('kendaraan_id', $this->kendaraan_id)->first()->harga;
         $total_hargaa = $this->lama_sewa * $harga_sewaa;
         if ($this->ktp != null) {
             $filename = $this->ktp->hashName();
             $this->ktp->storeAs('pengguna/ktp/', $filename, 'public');
             Transaksi::create([
-                'kendaraan_id' => $this->kendaraan,
-                'user_id' => $this->pengguna,
+                'kendaraan_id' => $this->kendaraan_id,
+                'user_id' => $this->pengguna_id,
                 'lama_sewa' => $this->lama_sewa,
                 'total_harga' => $total_hargaa,
                 'pembayaran' => $this->pembayaran,
@@ -81,8 +85,8 @@ class IndexTransaksi extends Component
             ]);
         } else {
             Transaksi::create([
-                'kendaraan_id' => $this->kendaraan,
-                'user_id' => $this->pengguna,
+                'kendaraan_id' => $this->kendaraan_id,
+                'user_id' => $this->pengguna_id,
                 'lama_sewa' => $this->lama_sewa,
                 'total_harga' => $total_hargaa,
                 'pembayaran' => $this->pembayaran,
@@ -92,15 +96,15 @@ class IndexTransaksi extends Component
 
         toastr()->success('Transaksi berhasil ditambahkan');
         $this->reset();
-        $this->dispatch('created');
+        // $this->dispatch('created');
     }
 
     public function edit($id)
     {
         $this->transaksii = Transaksi::find($id);
 
-        $this->kendaraan = $this->transaksii->kendaraan_id;
-        $this->pengguna = $this->transaksii->user_id;
+        $this->kendaraan_id = $this->transaksii->kendaraan_id;
+        $this->pengguna_id = $this->transaksii->user_id;
         $this->lama_sewa = $this->transaksii->lama_sewa;
         $this->pembayaran = $this->transaksii->pembayaran;
         $this->status = $this->transaksii->status;
@@ -162,5 +166,6 @@ class IndexTransaksi extends Component
     public function resetInput()
     {
         $this->reset();
+        $this->dispatch('reseted');
     }
 }
