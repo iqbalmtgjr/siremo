@@ -17,51 +17,62 @@
                     </a>
                 </li>
             </ul>
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a wire:navigate href="{{ url('pengguna') }}"
-                        class="nav-link {{ request()->is('pengguna') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-people-fill"></i>
-                        <p>Semua Pengguna</p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a wire:navigate href="{{ url('mitra') }}"
-                        class="nav-link {{ request()->is('mitra') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-intersect"></i>
-                        <p>Mitra</p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a wire:navigate href="{{ url('kendaraan') }}"
-                        class="nav-link {{ request()->is('kendaraan') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-truck"></i>
-                        <p>Kendaraan</p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a wire:navigate href="{{ url('hargasewa') }}"
-                        class="nav-link {{ request()->is('hargasewa') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-currency-dollar"></i>
-                        <p>Harga Sewa</p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a wire:navigate href="{{ url('transaksi') }}"
-                        class="nav-link {{ request()->is('transaksi') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-cash-stack"></i>
-                        <p>Transaksi</p>
-                    </a>
-                </li>
-            </ul>
+            @if (auth()->user()->role == 'super_admin')
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a wire:navigate href="{{ url('pengguna') }}"
+                            class="nav-link {{ request()->is('pengguna') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-people-fill"></i>
+                            <p>Semua Pengguna</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a wire:navigate href="{{ url('mitra') }}"
+                            class="nav-link {{ request()->is('mitra') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-intersect"></i>
+                            <p>Mitra</p>
+                        </a>
+                    </li>
+                </ul>
+            @endif
+            @if (auth()->user()->role == 'admin_mitra')
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a wire:navigate href="{{ url('kendaraan') }}"
+                            class="nav-link {{ request()->is('kendaraan') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-truck"></i>
+                            <p>Kendaraan</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a wire:navigate href="{{ url('hargasewa') }}"
+                            class="nav-link {{ request()->is('hargasewa') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-currency-dollar"></i>
+                            <p>Harga Sewa</p>
+                        </a>
+                    </li>
+                </ul>
+            @endif
+            @if (auth()->user()->role == 'admin_mitra' || auth()->user()->role == 'staff_mitra')
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a wire:navigate href="{{ url('transaksi') }}"
+                            class="nav-link {{ request()->is('transaksi') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-cash-stack"></i>
+                            <p>Transaksi</p>
+                        </a>
+                    </li>
+                </ul>
+            @endif
         </nav>
     </div>
 </aside>

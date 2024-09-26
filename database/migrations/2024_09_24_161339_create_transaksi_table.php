@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kendaraan_id')->references('id')->on('kendaraan')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
-            $table->string('ktp');
+            $table->string('ktp')->nullable();
             $table->integer('lama_sewa');
             $table->string('total_harga');
             $table->string('pembayaran'); //lunas, belum_lunas

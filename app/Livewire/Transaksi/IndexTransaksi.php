@@ -69,7 +69,13 @@ class IndexTransaksi extends Component
     {
         // dd($this->all());
         $this->validate();
-        $harga_sewaa = Hargasewa::where('kendaraan_id', $this->kendaraan_id)->first()->harga;
+
+        $harga_sewaa = Hargasewa::where('kendaraan_id', $this->kendaraan_id)->first()?->harga;
+        if (!$harga_sewaa) {
+            toastr()->error('Harga belum ditentukan admin mitra');
+            return redirect('/transaksi');
+        }
+        // $harga_sewaa = Hargasewa::where('kendaraan_id', $this->kendaraan_id)->first()->harga;
         $total_hargaa = $this->lama_sewa * $harga_sewaa;
         if ($this->ktp != null) {
             $filename = $this->ktp->hashName();
@@ -95,6 +101,7 @@ class IndexTransaksi extends Component
         }
 
         toastr()->success('Transaksi berhasil ditambahkan');
+        return redirect('/transaksi');
         $this->reset();
         // $this->dispatch('created');
     }
@@ -127,7 +134,7 @@ class IndexTransaksi extends Component
             $filename = $this->ktp->hashName();
             $this->ktp->storeAs('pengguna/ktp/', $filename, 'public');
             Transaksi::where('id', $this->transaksii->id)->update([
-                'kendaraan_id' => $this->kendaraan,
+                'kendaraan_id' => $this->kendaraan_id,
                 'user_id' => $this->pengguna,
                 'lama_sewa' => $this->lama_sewa,
                 'pembayaran' => $this->pembayaran,
@@ -137,7 +144,7 @@ class IndexTransaksi extends Component
             ]);
         } else {
             Transaksi::where('id', $this->transaksii->id)->update([
-                'kendaraan_id' => $this->kendaraan,
+                'kendaraan_id' => $this->kendaraan_id,
                 'user_id' => $this->pengguna,
                 'lama_sewa' => $this->lama_sewa,
                 'pembayaran' => $this->pembayaran,
@@ -147,7 +154,8 @@ class IndexTransaksi extends Component
         }
 
         toastr()->success('Transaksi berhasil diperbarui');
-        $this->dispatch('edited');
+        return redirect('/transaksi');
+        // $this->dispatch('edited');
     }
 
     public function delete($id)
@@ -155,7 +163,7 @@ class IndexTransaksi extends Component
         $kendaraan = Transaksi::find($id);
         $kendaraan->delete();
         toastr()->success('Transaksi berhasil di hapus');
-        $this->dispatch('deleted');
+        // $this->dispatch('deleted');
     }
 
     public function updatingSearch()

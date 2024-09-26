@@ -7,13 +7,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
-            // $(document).ready(function() {
-            //     $('.select2').select2();
-            // });
-
             document.addEventListener('livewire:init', function() {
                 // Inisialisasi Select2 setelah Livewire selesai dimuat
-                $('.select2').select2();
+                // $('.select2').select2();
 
                 // Dengarkan event dari Select2 dan sinkronkan dengan Livewire
                 $('.select2').on('change', function(e) {
@@ -24,6 +20,9 @@
 
             document.addEventListener('livewire:update', function() {
                 // Re-inisialisasi Select2 setelah Livewire diperbarui
+                $('.select2').select2();
+            });
+            $(document).ready(function() {
                 $('.select2').select2();
             });
         </script>
@@ -53,8 +52,8 @@
                                             <form wire:submit.prevent="store" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="mb-3">
+                                                    <label for="kendaraan_id" class="form-label">Kendaraan</label>
                                                     <div wire:ignore>
-                                                        <label for="kendaraan_id" class="form-label">Kendaraan</label>
                                                         <select class="form-select select2" style="width: 100%"
                                                             wire:model="kendaraan_id">
                                                             <option value="">-- Pilih Kendaraan --

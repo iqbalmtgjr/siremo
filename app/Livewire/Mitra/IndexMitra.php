@@ -81,8 +81,9 @@ class IndexMitra extends Component
         }
 
         toastr()->success('Mitra berhasil ditambahkan');
-        $this->reset();
-        $this->dispatch('created');
+        return redirect('/mitra');
+        // $this->reset();
+        // $this->dispatch('created');
     }
 
     public function edit($id)
@@ -106,7 +107,8 @@ class IndexMitra extends Component
         ]);
 
         toastr()->success('Mitra berhasil diperbarui');
-        $this->dispatch('edited');
+        return redirect('/mitra');
+        // $this->dispatch('edited');
     }
 
     public function delete($id)
@@ -114,7 +116,7 @@ class IndexMitra extends Component
         $mitra = Mitra::find($id);
         $mitra->delete();
         toastr()->success('Mitra berhasil di hapus');
-        $this->dispatch('deleted');
+        // $this->dispatch('deleted');
     }
 
     public function updatingSearch()

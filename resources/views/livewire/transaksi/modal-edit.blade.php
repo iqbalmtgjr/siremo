@@ -11,9 +11,9 @@
                     @csrf
                     <div class="mb-3">
                         <label for="kendaraan" class="form-label">Kendaraan</label>
-                        <select class="form-select" id="kendaraan" wire:model="kendaraan">
+                        <select class="form-select" id="kendaraan" wire:model="kendaraan_id">
                             <option value="">-- Pilih Kendaraan --</option>
-                            @foreach ($kendaraans as $kendaraan)
+                            @foreach (app\models\Kendaraan::all() as $kendaraan)
                                 <option value="{{ $kendaraan->id }}">{{ $kendaraan->merk }} - {{ $kendaraan->plat }}
                                 </option>
                             @endforeach
@@ -23,8 +23,8 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="pengguna" class="form-label">User</label>
-                        <select class="form-select" id="pengguna" wire:model="pengguna">
+                        <label for="pengguna" class="form-label">Pengguna</label>
+                        <select class="form-select" id="pengguna" wire:model="pengguna_id">
                             <option value="">-- Pilih Pengguna --</option>
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}">{{ $user->nama }}</option>

@@ -11,7 +11,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="kendaraan_id" class="form-label">Kendaraan</label>
-                        <select class="form-select" id="kendaraan" wire:model="kendaraan">
+                        <select class="form-select" id="kendaraan" wire:model="kendaraan_id">
                             <option value="">-- Pilih Kendaraan --</option>
                             @foreach ($kendaraans as $kendaraan)
                                 <option value="{{ $kendaraan->id }}">{{ $kendaraan->merk }} - {{ $kendaraan->plat }}

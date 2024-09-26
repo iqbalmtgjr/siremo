@@ -25,9 +25,8 @@
                                                 aria-describedby="basic-addon1">
                                         </div>
                                         <div class="ms-2">
-                                            <a href="javascript:void(0)" wire:click="resetInput"
-                                                class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#tambah">
+                                            <a href="javascript:void(0)" class="btn btn-primary btn-sm"
+                                                data-bs-toggle="modal" data-bs-target="#tambah">
                                                 <i class="bi bi-plus-circle"></i> Tambah
                                             </a>
                                         </div>

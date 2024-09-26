@@ -3,12 +3,12 @@
 namespace App\Livewire\Pengguna;
 
 use App\Models\User;
+use App\Models\Mitra;
 use Livewire\Component;
 use App\Models\Kendaraan;
-use App\Models\Mitra;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
-use Livewire\Attributes\Rule;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -78,9 +78,10 @@ class IndexPengguna extends Component
             'role' => $this->role,
         ]);
 
+        // $this->dispatch('created');
         toastr()->success('Pengguna berhasil ditambahkan');
-        $this->reset();
-        $this->dispatch('created');
+        return redirect('/pengguna');
+        // $this->reset();
     }
 
     public function edit($id)
@@ -114,7 +115,8 @@ class IndexPengguna extends Component
         ]);
 
         toastr()->success('Mitra berhasil diperbarui');
-        $this->dispatch('mitraed');
+        return redirect('/pengguna');
+        // $this->dispatch('mitraed');
     }
 
     public function update()
@@ -125,7 +127,13 @@ class IndexPengguna extends Component
             ['nama' => $this->nama, 'username' => $this->username, 'email' => $this->email, 'no_hp' => $this->no_hp, 'role' => $this->role],
 
             // Validation rules to apply...
-            ['nama' => 'required|min:3', 'no_hp' => 'required|max:13', 'username' => 'required|min:3|unique:users,username,' . $this->user_id, 'email' => 'required|email|unique:users,email,' . $this->user_id, 'role' => 'required'],
+            [
+                'nama' => ['required', 'min:3'],
+                'no_hp' => ['required', 'max:13'],
+                'username' => ['required', 'min:3', Rule::unique('users', 'username')->ignore($this->user)],
+                'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($this->user)],
+                'role' => ['required'],
+            ],
 
         )->validate();
 
@@ -138,7 +146,8 @@ class IndexPengguna extends Component
         ]);
 
         toastr()->success('Pengguna berhasil diperbarui');
-        $this->dispatch('edited');
+        return redirect('/pengguna');
+        // $this->dispatch('edited');
     }
 
     public function delete($id)

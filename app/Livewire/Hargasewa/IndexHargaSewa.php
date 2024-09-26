@@ -19,9 +19,10 @@ class IndexHargaSewa extends Component
     public $kendaraans, $total, $paginate = 10;
 
     public $search;
+    public $kendaraan;
 
     #[Rule('required', as: 'Kendaraan')]
-    public $kendaraan;
+    public $kendaraan_id;
 
     #[Rule('required', as: 'Harga Sewa')]
     public $harga_sewa;
@@ -30,7 +31,7 @@ class IndexHargaSewa extends Component
     public function render()
     {
         $this->total = Hargasewa::all()->count();
-        $this->kendaraans = Kendaraan::all();
+        $this->kendaraans = Kendaraan::where('status', 'Tersedia')->get();
 
         return view(
             'livewire.hargasewa.index-harga-sewa',
@@ -56,15 +57,16 @@ class IndexHargaSewa extends Component
         ]);
 
         toastr()->success('Harga Sewa berhasil ditambahkan');
-        $this->reset();
-        $this->dispatch('created');
+        return redirect('/hargasewa');
+        // $this->reset();
+        // $this->dispatch('created');
     }
 
     public function edit($id)
     {
         $this->kendaraan = Hargasewa::find($id);
         // dd($this->kendaraan->harga);
-        $this->kendaraan = $this->kendaraan->kendaraan_id;
+        $this->kendaraan_id = $this->kendaraan->kendaraan_id;
         $this->harga_sewa = Hargasewa::find($id)->harga;
     }
 
@@ -72,12 +74,13 @@ class IndexHargaSewa extends Component
     {
         $this->validate();
         $this->kendaraan->update([
-            'kendaraan_id' => $this->kendaraan,
+            'kendaraan_id' => $this->kendaraan_id,
             'harga' => $this->harga_sewa,
         ]);
 
         toastr()->success('Harga sewa berhasil diperbarui');
-        $this->dispatch('edited');
+        return redirect('/hargasewa');
+        // $this->dispatch('edited');
     }
 
     public function delete($id)
@@ -85,7 +88,6 @@ class IndexHargaSewa extends Component
         $kendaraan = Hargasewa::find($id);
         $kendaraan->delete();
         toastr()->success('Harga sewa berhasil di hapus');
-        $this->dispatch('deleted');
     }
 
     public function updatingSearch()

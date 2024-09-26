@@ -58,7 +58,7 @@
                         <select class="form-select" id="status" wire:model="status">
                             <option value="">-- Pilih Status --</option>
                             <option value="Tersedia">Tersedia</option>
-                            <option value="Sedang disewa">Sedang disewa</option>
+                            <option value="Tidak Tersedia">Tidak Tersedia</option>
                         </select>
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>

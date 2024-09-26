@@ -3,11 +3,13 @@
 namespace App\Livewire\Kendaraan;
 
 use App\Models\User;
+use App\Models\Mitra;
 use Livewire\Component;
 use App\Models\Kendaraan;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Rule;
+use Illuminate\Container\Attributes\Auth;
 
 class IndexKendaraan extends Component
 {
@@ -39,8 +41,12 @@ class IndexKendaraan extends Component
     #[On('updateModal')]
     public function render()
     {
-        $this->total = Kendaraan::all()->count();
+        // $user_kend = User::where('mitra_id', auth()->user()->mitra_id)->get();
+        $this->total = Kendaraan::join('users', 'users.id', '=', 'kendaraan.user_id')
+            ->where('mitra_id', auth()->user()->mitra_id)->get()->count();
+        // dd($this->total);
         $this->users = User::where('role', '<>', 'super_admin')->get();
+        $mitra = Mitra::find(auth()->user()->mitra_id)->nama;
 
         return view(
             'livewire.kendaraan.index-kendaraan',
@@ -48,14 +54,17 @@ class IndexKendaraan extends Component
                 'kendaraans'  => $this->search === null ?
                     Kendaraan::paginate($this->paginate) :
                     Kendaraan::where(function ($query) {
-                        $query->where('merk', 'LIKE', '%' . $this->search . '%')
+                        $query->join('users', 'users.id', '=', 'kendaraan.user_id')
+                            ->where('mitra_id', auth()->user()->mitra_id)
+                            ->Orwhere('merk', 'LIKE', '%' . $this->search . '%')
                             ->orWhere('plat', 'LIKE', '%' . $this->search . '%')
                             ->orWhereHas('user', function ($query) {
                                 $query->where('nama', 'LIKE', '%' . $this->search . '%');
                             });
                     })->paginate($this->paginate),
                 'users' => $this->users,
-                'total' => $this->total
+                'total' => $this->total,
+                'mitra' => $mitra
             ]
         );
     }
@@ -73,13 +82,15 @@ class IndexKendaraan extends Component
         ]);
 
         toastr()->success('Kendaraan berhasil ditambahkan');
-        $this->reset();
-        $this->dispatch('created');
+        return redirect('/kendaraan');
+        // $this->reset();
+        // $this->dispatch('created');
     }
 
     public function edit($id)
     {
         $this->kendaraan = Kendaraan::find($id);
+        // dd($this->kendaraan);
 
         $this->pemilik = $this->kendaraan->user_id;
         $this->plat = $this->kendaraan->plat;
@@ -102,7 +113,8 @@ class IndexKendaraan extends Component
         ]);
 
         toastr()->success('Kendaraan berhasil diperbarui');
-        $this->dispatch('edited');
+        return redirect('/kendaraan');
+        // $this->dispatch('edited');
     }
 
     public function delete($id)
@@ -110,7 +122,7 @@ class IndexKendaraan extends Component
         $kendaraan = Kendaraan::find($id);
         $kendaraan->delete();
         toastr()->success('Kendaraan berhasil di hapus');
-        $this->dispatch('deleted');
+        // $this->dispatch('deleted');
     }
 
     public function updatingSearch()
