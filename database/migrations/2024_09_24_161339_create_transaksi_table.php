@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('kendaraan_id')->references('id')->on('kendaraan')->onDelete('cascade');
+            $table->foreignId('mitra_id')->references('id')->on('mitra')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->string('ktp')->nullable();
             $table->integer('lama_sewa');

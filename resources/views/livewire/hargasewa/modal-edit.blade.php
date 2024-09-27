@@ -11,7 +11,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="kendaraan" class="form-label">Kendaraan</label>
-                        <select class="form-select" id="kendaraan" wire:model="kendaraan_id">
+                        <select disabled class="form-select" id="kendaraan" wire:model="kendaraan_id">
                             <option value="">-- Pilih Kendaraan --</option>
                             @foreach ($kendaraans as $kendaraan)
                                 <option value="{{ $kendaraan->id }}">{{ $kendaraan->merk }} - {{ $kendaraan->plat }}
@@ -24,7 +24,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="harga_sewa" class="form-label">Harga Sewa</label>
-                        <input type="number" class="form-control" id="harga_sewa" wire:model="harga_sewa">
+                        <input type="number" class="form-control" id="harga_sewa" wire:model="harga_sewa"
+                            placeholder="Masukkan harga sewa tanpa titik atau koma...">
                         @error('harga_sewa')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

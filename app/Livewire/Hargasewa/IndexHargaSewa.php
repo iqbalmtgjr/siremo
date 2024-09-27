@@ -31,7 +31,9 @@ class IndexHargaSewa extends Component
     public function render()
     {
         $this->total = Hargasewa::all()->count();
-        $this->kendaraans = Kendaraan::where('status', 'Tersedia')->get();
+        $this->kendaraans = Kendaraan::where('mitra_id', auth()->user()->mitra_id)
+            ->where('status', 'Tersedia')
+            ->get();
 
         return view(
             'livewire.hargasewa.index-harga-sewa',
@@ -52,7 +54,7 @@ class IndexHargaSewa extends Component
     {
         $this->validate();
         Hargasewa::create([
-            'kendaraan_id' => $this->kendaraan,
+            'kendaraan_id' => $this->kendaraan_id,
             'harga' => $this->harga_sewa,
         ]);
 

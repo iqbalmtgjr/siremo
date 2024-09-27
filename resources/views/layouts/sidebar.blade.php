@@ -43,6 +43,16 @@
                 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
+                        <a wire:navigate href="{{ url('penggunamitra') }}"
+                            class="nav-link {{ request()->is('penggunamitra') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-people-fill"></i>
+                            <p>Pengguna</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
                         <a wire:navigate href="{{ url('kendaraan') }}"
                             class="nav-link {{ request()->is('kendaraan') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-truck"></i>
@@ -50,7 +60,7 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                {{-- <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
                         <a wire:navigate href="{{ url('hargasewa') }}"
@@ -59,7 +69,7 @@
                             <p>Harga Sewa</p>
                         </a>
                     </li>
-                </ul>
+                </ul> --}}
             @endif
             @if (auth()->user()->role == 'admin_mitra' || auth()->user()->role == 'staff_mitra')
                 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
@@ -69,6 +79,18 @@
                             class="nav-link {{ request()->is('transaksi') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-cash-stack"></i>
                             <p>Transaksi</p>
+                        </a>
+                    </li>
+                </ul>
+            @endif
+            @if (auth()->user()->role == 'admin_mitra')
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a wire:navigate href="{{ url('riwayat') }}"
+                            class="nav-link {{ request()->is('riwayat') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-clipboard-data"></i>
+                            <p>Riwayat Transaksi</p>
                         </a>
                     </li>
                 </ul>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Kendaraan;
 
+use App\Models\Hargasewa;
 use App\Models\User;
 use App\Models\Mitra;
 use Livewire\Component;
@@ -33,6 +34,9 @@ class IndexKendaraan extends Component
     public $status;
 
     #[Rule('required', as: 'Plat Kendaraan')]
+    public $harga_sewa;
+
+    #[Rule('required', as: 'Plat Kendaraan')]
     public $plat;
 
     #[Rule('required', as: 'Alamat Kendaraan')]
@@ -41,12 +45,10 @@ class IndexKendaraan extends Component
     #[On('updateModal')]
     public function render()
     {
-        // $user_kend = User::where('mitra_id', auth()->user()->mitra_id)->get();
-        $this->total = Kendaraan::join('users', 'users.id', '=', 'kendaraan.user_id')
-            ->where('mitra_id', auth()->user()->mitra_id)->get()->count();
-        // dd($this->total);
-        $this->users = User::where('role', '<>', 'super_admin')->get();
-        $mitra = Mitra::find(auth()->user()->mitra_id)->nama;
+        $this->total = Kendaraan::where('mitra_id', auth()->user()->mitra_id)->get()->count();
+        $this->users = User::where('role', '<>', 'super_admin')
+            ->where('mitra_id', auth()->user()->mitra_id)
+            ->get();
 
         return view(
             'livewire.kendaraan.index-kendaraan',
@@ -54,8 +56,7 @@ class IndexKendaraan extends Component
                 'kendaraans'  => $this->search === null ?
                     Kendaraan::paginate($this->paginate) :
                     Kendaraan::where(function ($query) {
-                        $query->join('users', 'users.id', '=', 'kendaraan.user_id')
-                            ->where('mitra_id', auth()->user()->mitra_id)
+                        $query->where('mitra_id', auth()->user()->mitra_id)
                             ->Orwhere('merk', 'LIKE', '%' . $this->search . '%')
                             ->orWhere('plat', 'LIKE', '%' . $this->search . '%')
                             ->orWhereHas('user', function ($query) {
@@ -64,7 +65,7 @@ class IndexKendaraan extends Component
                     })->paginate($this->paginate),
                 'users' => $this->users,
                 'total' => $this->total,
-                'mitra' => $mitra
+                'mitra' => Mitra::find(auth()->user()->mitra_id)->nama
             ]
         );
     }
@@ -72,13 +73,27 @@ class IndexKendaraan extends Component
     public function store()
     {
         $this->validate();
-        Kendaraan::create([
+
+        $mitraid = User::find($this->pemilik)->mitra_id;
+        // dd($mitraid);
+        if ($mitraid != auth()->user()->mitra_id) {
+            toastr()->error('Pemilik Kendaraan sudah terdaftar di mitra lain');
+            return redirect('/kendaraan');
+        }
+
+        $ken = Kendaraan::create([
             'user_id' => $this->pemilik,
+            'mitra_id' => $mitraid,
             'plat' => $this->plat,
             'merk' => $this->merk,
             'tipe' => $this->tipe,
             'alamat' => $this->alamat,
+            'harga_sewa' => $this->harga_sewa,
             'status' => 'Tersedia'
+        ]);
+
+        Hargasewa::create([
+            'kendaraan_id' => $ken->id,
         ]);
 
         toastr()->success('Kendaraan berhasil ditambahkan');
@@ -98,6 +113,7 @@ class IndexKendaraan extends Component
         $this->tipe = $this->kendaraan->tipe;
         $this->alamat = $this->kendaraan->alamat;
         $this->status = $this->kendaraan->status;
+        $this->harga_sewa = $this->kendaraan->harga_sewa;
     }
 
     public function update()
@@ -109,7 +125,8 @@ class IndexKendaraan extends Component
             'merk' => $this->merk,
             'tipe' => $this->tipe,
             'alamat' => $this->alamat,
-            'status' => $this->status
+            'status' => $this->status,
+            'harga_sewa' => $this->harga_sewa,
         ]);
 
         toastr()->success('Kendaraan berhasil diperbarui');
