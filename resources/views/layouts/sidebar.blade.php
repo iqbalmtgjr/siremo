@@ -21,20 +21,20 @@
                 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
-                        <a wire:navigate href="{{ url('pengguna') }}"
-                            class="nav-link {{ request()->is('pengguna') ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-people-fill"></i>
-                            <p>Semua Pengguna</p>
+                        <a wire:navigate href="{{ url('mitra') }}"
+                            class="nav-link {{ request()->is('mitra') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-intersect"></i>
+                            <p>Mitra</p>
                         </a>
                     </li>
                 </ul>
                 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
-                        <a wire:navigate href="{{ url('mitra') }}"
-                            class="nav-link {{ request()->is('mitra') ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-intersect"></i>
-                            <p>Mitra</p>
+                        <a wire:navigate href="{{ url('pengguna') }}"
+                            class="nav-link {{ request()->is('pengguna') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-people-fill"></i>
+                            <p>Semua Pengguna</p>
                         </a>
                     </li>
                 </ul>

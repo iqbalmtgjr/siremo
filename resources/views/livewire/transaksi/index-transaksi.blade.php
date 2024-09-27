@@ -44,7 +44,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card mb-4">
-                                    <div class="card-body">
+                                    <div class="card-body" wire:ignore>
                                         <center>
                                             <h2 class="align-center">Input Transaksi</h2>
                                         </center> <br>
