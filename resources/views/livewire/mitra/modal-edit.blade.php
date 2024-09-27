@@ -60,8 +60,8 @@
                             </div>
                         </div>
                     </div>
-                    @if ($logo)
-                        <img class="mt-3" width="200" src="{{ $logo->temporaryUrl() }}">
+                    @if ($logo_edit)
+                        <img class="mt-3" width="200" src="{{ asset('storage/mitra/logo/' . $logo_edit . '') }}">
                     @endif
             </div>
             <div class="modal-footer">

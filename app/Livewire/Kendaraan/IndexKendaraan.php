@@ -2,19 +2,21 @@
 
 namespace App\Livewire\Kendaraan;
 
-use App\Models\Hargasewa;
 use App\Models\User;
 use App\Models\Mitra;
 use Livewire\Component;
+use App\Models\Hargasewa;
 use App\Models\Kendaraan;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Rule;
+use Livewire\WithFileUploads;
 use Illuminate\Container\Attributes\Auth;
 
 class IndexKendaraan extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -41,6 +43,11 @@ class IndexKendaraan extends Component
 
     #[Rule('required', as: 'Alamat Kendaraan')]
     public $alamat;
+
+    #[Rule(['foto.*' => 'image|max:1024'], as: 'Foto Kendaraan')]
+    public $foto;
+
+    public $foto_edit;
 
     #[On('updateModal')]
     public function render()
@@ -89,12 +96,18 @@ class IndexKendaraan extends Component
             'tipe' => $this->tipe,
             'alamat' => $this->alamat,
             'harga_sewa' => $this->harga_sewa,
-            'status' => 'Tersedia'
+            'status' => 'Tersedia',
         ]);
 
-        Hargasewa::create([
-            'kendaraan_id' => $ken->id,
-        ]);
+        if ($this->foto != null) {
+            $filename = $this->foto->hashName();
+            $this->foto->storeAs('kendaraan/foto/', $filename, 'public');
+            $ken->update(['foto' => $filename]);
+        }
+
+        // Hargasewa::create([
+        //     'kendaraan_id' => $ken->id,
+        // ]);
 
         toastr()->success('Kendaraan berhasil ditambahkan');
         return redirect('/kendaraan');
@@ -114,6 +127,9 @@ class IndexKendaraan extends Component
         $this->alamat = $this->kendaraan->alamat;
         $this->status = $this->kendaraan->status;
         $this->harga_sewa = $this->kendaraan->harga_sewa;
+        if ($this->kendaraan->foto != null) {
+            $this->foto_edit = $this->kendaraan->foto;
+        }
     }
 
     public function update()
@@ -129,6 +145,17 @@ class IndexKendaraan extends Component
             'harga_sewa' => $this->harga_sewa,
         ]);
 
+        if ($this->foto != null) {
+            if ($this->kendaraan->foto != null) {
+                @unlink(public_path('storage/kendaraan/foto/' . $this->kendaraan->foto));
+            }
+            $filename = $this->foto->hashName();
+            $this->foto->storeAs('kendaraan/foto/', $filename, 'public');
+            $this->kendaraan->update([
+                'foto' => $filename
+            ]);
+        }
+
         toastr()->success('Kendaraan berhasil diperbarui');
         return redirect('/kendaraan');
         // $this->dispatch('edited');
@@ -137,6 +164,9 @@ class IndexKendaraan extends Component
     public function delete($id)
     {
         $kendaraan = Kendaraan::find($id);
+        if ($kendaraan->foto != null) {
+            @unlink(public_path('storage/kendaran/foto/' . $kendaraan->foto));
+        }
         $kendaraan->delete();
         toastr()->success('Kendaraan berhasil di hapus');
         // $this->dispatch('deleted');

@@ -72,6 +72,29 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="mb-3">
+                        <label for="alamat" class="form-label">Foto Kendaraan</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true"
+                            x-on:livewire-upload-finish="uploading = false"
+                            x-on:livewire-upload-cancel="uploading = false"
+                            x-on:livewire-upload-error="uploading = false"
+                            x-on:livewire-upload-progress="progress = $event.detail.progress">
+                            <!-- File Input -->
+                            <input type="file" class="form-control" wire:model="foto">
+                            @error('foto')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            <!-- Progress Bar -->
+                            <div x-show="uploading">
+                                <progress max="100" x-bind:value="progress"></progress>
+                            </div>
+                        </div>
+                        @if ($foto_edit)
+                            <img class="mt-3" width="200"
+                                src="{{ asset('storage/kendaraan/foto/' . $foto_edit . '') }}">
+                        @endif
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

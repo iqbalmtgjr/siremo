@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Storage;
 
 class IndexMitra extends Component
 {
@@ -32,6 +33,8 @@ class IndexMitra extends Component
 
     #[Validate(['logo.*' => 'image|max:1024'])]
     public $logo;
+
+    public $logo_edit;
 
     public $status;
 
@@ -94,6 +97,9 @@ class IndexMitra extends Component
         $this->alamat = $this->mitra->alamat;
         $this->no_hp = $this->mitra->no_hp;
         $this->status = $this->mitra->status;
+        if ($this->mitra->logo != null) {
+            $this->logo_edit = $this->mitra->logo;
+        }
     }
 
     public function update()
@@ -105,6 +111,17 @@ class IndexMitra extends Component
             'no_hp' => $this->no_hp,
             'status' => $this->status,
         ]);
+
+        if ($this->logo != null) {
+            if ($this->mitra->logo != null) {
+                @unlink(public_path('storage/mitra/logo/' . $this->mitra->logo));
+            }
+            $filename = $this->logo->hashName();
+            $this->logo->storeAs('mitra/logo/', $filename, 'public');
+            $this->mitra->update([
+                'logo' => $filename
+            ]);
+        }
 
         toastr()->success('Mitra berhasil diperbarui');
         return redirect('/mitra');
@@ -130,8 +147,12 @@ class IndexMitra extends Component
     public function delete($id)
     {
         $mitra = Mitra::find($id);
+        if ($mitra->logo != null) {
+            @unlink(public_path('storage/mitra/logo/' . $mitra->logo));
+        }
         $mitra->delete();
         toastr()->success('Mitra berhasil di hapus');
+        return redirect('/mitra');
         // $this->dispatch('deleted');
     }
 

@@ -69,6 +69,7 @@
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Pemilik</th>
+                                                        <th>Foto</th>
                                                         <th>Merk</th>
                                                         <th>Plat</th>
                                                         <th>Alamat</th>
@@ -83,6 +84,15 @@
                                                             <tr wire:key="{{ $kendaraan->id }}" class="align-middle">
                                                                 <td>{{ $kendaraans->firstItem() + $loop->index }}.</td>
                                                                 <td>{{ isset($kendaraan->user) ? $kendaraan->user->nama : '' }}
+                                                                </td>
+                                                                <td>
+                                                                    @if ($kendaraan->foto)
+                                                                        <img src="{{ asset('storage/kendaraan/foto/' . $kendaraan->foto) }}"
+                                                                            alt="foto {{ $kendaraan->nama }}"
+                                                                            class="img-thumbnail" width="100">
+                                                                    @else
+                                                                        <span class="text-warning">Belum ada foto</span>
+                                                                    @endif
                                                                 </td>
                                                                 <td>{{ $kendaraan->merk }}</td>
                                                                 <td>{{ $kendaraan->plat }}</td>
