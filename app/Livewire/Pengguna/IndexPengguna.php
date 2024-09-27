@@ -46,7 +46,7 @@ class IndexPengguna extends Component
 
     public function render()
     {
-        $this->mitra = Mitra::all();
+        $this->mitra = Mitra::where('valid', 1)->get();
         $this->total = User::where('role', '<>', 'super_admin')->count();
         return view(
             'livewire.pengguna.index-pengguna',
@@ -155,6 +155,11 @@ class IndexPengguna extends Component
         $user = User::find($id);
         $user->delete();
         toastr()->success('Pengguna berhasil di hapus');
+    }
+
+    public function resetInput()
+    {
+        $this->reset();
     }
 
     public function updatingSearch()

@@ -43,6 +43,7 @@
                                                         <th>Alamat</th>
                                                         <th>No Hp</th>
                                                         <th>Status</th>
+                                                        <th>Validasi</th>
                                                         <th style="width: 200px">Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -68,6 +69,14 @@
                                                                         class="badge rounded-pill bg-{{ $mitra->status == 'buka' ? 'success' : 'danger' }} text-light">
                                                                         {{ ucfirst($mitra->status) }}
                                                                     </span>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)"
+                                                                        wire:click="valid({{ $mitra->id }})"
+                                                                        wire:confirm="Ubah validasi mitra ini?"
+                                                                        class="badge rounded-pill bg-{{ $mitra->valid == 1 ? 'success' : 'danger' }} text-light">
+                                                                        {{ ucfirst($mitra->valid ? 'Valid' : 'Belum Valid') }}
+                                                                    </a>
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)"

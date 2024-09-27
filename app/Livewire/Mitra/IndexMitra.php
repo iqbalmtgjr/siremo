@@ -46,12 +46,12 @@ class IndexMitra extends Component
             'livewire.mitra.index-mitra',
             [
                 'mitras'  => $this->search === null ?
-                    Mitra::paginate($this->paginate) :
+                    Mitra::orderBy('valid', 'ASC')->paginate($this->paginate) :
                     Mitra::where(function ($query) {
                         $query->where('nama', 'LIKE', '%' . $this->search . '%')
                             ->orWhere('alamat', 'LIKE', '%' . $this->search . '%')
                             ->orWhere('no_hp', 'LIKE', '%' . $this->search . '%');
-                    })->paginate($this->paginate),
+                    })->orderBy('valid', 'ASC')->paginate($this->paginate),
                 // 'total' => $this->total
             ]
         );
@@ -109,6 +109,22 @@ class IndexMitra extends Component
         toastr()->success('Mitra berhasil diperbarui');
         return redirect('/mitra');
         // $this->dispatch('edited');
+    }
+
+    public function valid($id)
+    {
+        $mitra = Mitra::find($id);
+        if ($mitra->valid == 1) {
+            $mitra->update([
+                'valid' => 0
+            ]);
+        } else {
+            $mitra->update([
+                'valid' => 1
+            ]);
+        }
+        toastr()->success('Mitra berhasil divalidasi');
+        return redirect('/mitra');
     }
 
     public function delete($id)

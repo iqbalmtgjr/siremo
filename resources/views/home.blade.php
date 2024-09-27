@@ -24,7 +24,7 @@
                 <div class="col-lg-3 col-6"> <!--begin::Small Box Widget 1-->
                     <div class="small-box text-bg-primary">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3>{{ app\\Models\Transaksi::count() }}</h3>
                             <p>New Orders</p>
                         </div> <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
