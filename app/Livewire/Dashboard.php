@@ -43,6 +43,7 @@ class Dashboard extends Component
             // dd($this->dataTransaksi);
         }
     }
+
     public function render()
     {
         return view('livewire.dashboard', [

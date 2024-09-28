@@ -61,7 +61,7 @@ class IndexKendaraan extends Component
             'livewire.kendaraan.index-kendaraan',
             [
                 'kendaraans'  => $this->search === null ?
-                    Kendaraan::paginate($this->paginate) :
+                    Kendaraan::where('mitra_id', auth()->user()->mitra_id)->paginate($this->paginate) :
                     Kendaraan::where(function ($query) {
                         $query->where('mitra_id', auth()->user()->mitra_id)
                             ->Orwhere('merk', 'LIKE', '%' . $this->search . '%')

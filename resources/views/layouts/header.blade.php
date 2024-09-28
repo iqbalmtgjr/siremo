@@ -8,7 +8,7 @@
     <meta name="title" content="SIREMO">
     <meta name="author" content="ColorlibHQ">
     <meta name="description"
-        content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS.">
+        content="SIREMO adalah sistem informasi rental mobil/motor. Platform ini mempermudah dalam pencatatan sewa kendaraan anda.">
     <meta name="keywords"
         content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard">
     <!--end::Primary Meta Tags--><!--begin::Fonts-->
@@ -27,5 +27,6 @@
         integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"><!-- jsvectormap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
         integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
+    <link rel="shortcut icon" href="{{ asset('asset/assets/img/icon.ico') }}" type="image/x-icon">
     @stack('header')
 </head> <!--end::Head--> <!--begin::Body-->

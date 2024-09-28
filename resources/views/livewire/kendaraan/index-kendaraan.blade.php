@@ -1,34 +1,4 @@
 <div>
-    @push('header')
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    @endpush
-    @push('footer')
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script>
-            document.addEventListener('livewire:init', function() {
-                // Inisialisasi Select2 setelah Livewire selesai dimuat
-                // $('.select2').select2();
-
-                // Dengarkan event dari Select2 dan sinkronkan dengan Livewire
-                $('.select2').on('change', function(e) {
-                    let element = $(this);
-                    @this.set(element.attr('wire:model'), element.val());
-                });
-            });
-
-            document.addEventListener('livewire:update', function() {
-                // Re-inisialisasi Select2 setelah Livewire diperbarui
-                $('.select2').select2();
-            });
-            $(document).ready(function() {
-                $('.select2').select2({
-                    dropdownParent: $('#tambah')
-                });
-            });
-        </script>
-    @endpush
     <div class="app-content">
         <div class="container-fluid">
             <div class="row">
@@ -157,3 +127,33 @@
             });
         });
     </script>
+</div>
+@push('header')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
+@push('footer')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        document.addEventListener('livewire:init', function() {
+            // Inisialisasi Select2 setelah Livewire selesai dimuat
+            // $('.select2').select2();
+
+            // Dengarkan event dari Select2 dan sinkronkan dengan Livewire
+            $('.select2').on('change', function(e) {
+                let element = $(this);
+                @this.set(element.attr('wire:model'), element.val());
+            });
+        });
+
+        document.addEventListener('livewire:update', function() {
+            // Re-inisialisasi Select2 setelah Livewire diperbarui
+            $('.select2').select2();
+        });
+        $(document).ready(function() {
+            $('.select2').select2({
+                dropdownParent: $('#tambah')
+            });
+        });
+    </script>
+@endpush

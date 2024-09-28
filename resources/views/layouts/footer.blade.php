@@ -1,7 +1,7 @@
 <footer class="app-footer"> <!--begin::To the end-->
     <div class="float-end d-none d-sm-inline">Version 1.0</div> <!--end::To the end-->
     <!--begin::Copyright--> <strong>
-        Copyright &copy; 2014-2024&nbsp;
+        Copyright &copy; 2024&nbsp;
         <a href="https://technocloud.id" class="text-decoration-none">Technocloud.id</a>.
     </strong>
     All rights reserved.
@@ -16,7 +16,7 @@
 <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
     integrity="sha256-YMa+wAM6QkVyz999odX7lPRxkoYAan8suedu4k2Zur8=" crossorigin="anonymous"></script> <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-<script src="asset/js/adminlte.js"></script> <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+<script src="{{ asset('asset/js/adminlte.js') }}"></script> <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
 <script>
     const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
     const Default = {

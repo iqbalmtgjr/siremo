@@ -47,7 +47,7 @@ class IndexTransaksi extends Component
     {
         $transaksi_skrng = Transaksi::where('mitra_id', auth()->user()->mitra_id)
             ->where('status', 'proses')->get();
-        $this->kendaraans = Kendaraan::whereNotIn('id', $transaksi_skrng->pluck('kendaraan_id'))->get();
+        $this->kendaraans = Kendaraan::where('mitra_id', auth()->user()->mitra_id)->whereNotIn('id', $transaksi_skrng->pluck('kendaraan_id'))->get();
         $this->total = Transaksi::where('status', 'proses')->get()->count();
         $this->users = User::where('role', '<>', 'super_admin')
             ->where('mitra_id', auth()->user()->mitra_id)

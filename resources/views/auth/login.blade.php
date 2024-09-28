@@ -1,6 +1,6 @@
 @include('layouts.header')
 
-<body class="login-page bg-body-secondary">
+<body style="background-color: rgb(170, 47, 47)" class="login-page">
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header"> <a href="{{ url('/') }}"

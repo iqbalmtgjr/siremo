@@ -3,13 +3,15 @@
 use App\Livewire\Dashboard;
 use App\Livewire\Mitra\IndexMitra;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Riwayat\IndexRiwayat;
 use App\Livewire\Pengguna\IndexPengguna;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\ProfilController;
 use App\Livewire\Hargasewa\IndexHargaSewa;
 use App\Livewire\Kendaraan\IndexKendaraan;
+use App\Livewire\Kritik\IndexKritik;
 use App\Livewire\Transaksi\IndexTransaksi;
 use App\Livewire\Penggunamitra\IndexPenggunaMitra;
-use App\Livewire\Riwayat\IndexRiwayat;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -32,4 +34,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/penggunamitra', IndexPenggunaMitra::class);
     Route::get('/transaksi', IndexTransaksi::class);
     Route::get('/riwayat', IndexRiwayat::class);
+
+    Route::get('/profil/{id}', [ProfilController::class, 'index']);
+    Route::put('/profil/{id}', [ProfilController::class, 'update'])->name('profil.update');
+    Route::put('/profil/{id}/password', [ProfilController::class, 'updatePassword'])->name('profil.password');
+
+    Route::get('/kritik', IndexKritik::class);
+    Route::post('/kritiksaran', [ProfilController::class, 'storeKritikSaran'])->name('kritiksaran.store');
 });
